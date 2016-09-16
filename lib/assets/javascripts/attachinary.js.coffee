@@ -3,9 +3,9 @@
   $.attachinary =
     index: 0
     config:
-      disableWith: 'Uploading...'
+      disableWith: $('.attachinary-input').data('uploading')
       indicateProgress: true
-      invalidFormatMessage: 'Invalid file format'
+      invalidFormatMessage: $('.attachinary-input').data('format')
       template: """
         <ul>
           <% for(var i=0; i<files.length; i++){ %>
@@ -14,10 +14,9 @@
                 <div class="raw-file"></div>
               <% } else { %>
                 <img
-                  src="<%= $.cloudinary.url(files[i].public_id, { "version": files[i].version, "format": 'jpg', "crop": 'fill', "width": 75, "height": 75 }) %>"
-                  alt="" width="75" height="75" />
+                  src="<%= $.cloudinary.url(files[i].public_id, { 'version': files[i].version, 'format': 'png', 'crop': 'limit', 'width': 75 }) %>" />
               <% } %>
-              <a href="#" data-remove="<%= files[i].public_id %>">Remove</a>
+              <a href="javascript:void(0)" data-remove="<%= files[i].public_id %>"><%= $('.attachinary-input').data('link') %></a>
             </li>
           <% } %>
         </ul>

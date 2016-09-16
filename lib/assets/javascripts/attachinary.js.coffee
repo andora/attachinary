@@ -156,6 +156,10 @@
     redraw: ->
       @$filesContainer.empty()
 
+      $('#file-upload').contents().filter ->
+        this.nodeType == 3
+      .remove()
+
       if @files.length > 0
         @$filesContainer.append @makeHiddenField(JSON.stringify(@files))
 

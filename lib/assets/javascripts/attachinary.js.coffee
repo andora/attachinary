@@ -3,9 +3,8 @@
   $.attachinary =
     index: 0
     config:
-      disableWith: $('.attachinary-input').data('uploading')
+      disableWith: true
       indicateProgress: true
-      invalidFormatMessage: $('.attachinary-input').data('format')
       template: """
         <ul>
           <% for(var i=0; i<files.length; i++){ %>
@@ -42,6 +41,7 @@
       @files = @options.files
 
       @$form = @$input.closest('form')
+      @$label = @$form.find('#file-upload')
       @$submit = @$form.find(@options.submit_selector ? 'input[type=submit]')
       @$wrapper = @$input.closest(@options.wrapper_container_selector) if @options.wrapper_container_selector?
 
@@ -77,7 +77,6 @@
           @$submit.each (index,input) =>
             $input = $(input)
             $input.data 'old-val', $input.val() unless $input.data('old-val')?
-          @$submit.val  @config.disableWith
           @$submit.prop 'disabled', true
 
         !@maximumReached()
@@ -108,7 +107,7 @@
       @$input.bind 'fileuploadprogressall', (e, data) =>
         progress = parseInt(data.loaded / data.total * 100, 10)
         if @config.disableWith && @config.indicateProgress
-          @$submit.val "[#{progress}%] #{@config.disableWith}"
+          @$submit.val "#{@$input.data('uploading')} [#{progress}%]"
 
 
     addFile: (file) ->
@@ -118,7 +117,7 @@
         @checkMaximum()
         @$input.trigger 'attachinary:fileadded', [file]
       else
-        alert @config.invalidFormatMessage
+        alert @$input.data 'format'
 
     removeFile: (fileIdToRemove) ->
       _files = []
@@ -156,7 +155,7 @@
     redraw: ->
       @$filesContainer.empty()
 
-      $('#file-upload').contents().filter ->
+      @$label.contents().filter ->
         this.nodeType == 3
       .remove()
 

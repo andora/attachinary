@@ -119,6 +119,10 @@
       else
         alert @$input.data 'format'
 
+      @$label.contents().filter ->
+        this.nodeType == 3
+      .remove()
+
     removeFile: (fileIdToRemove) ->
       _files = []
       removedFile = null
@@ -154,10 +158,6 @@
 
     redraw: ->
       @$filesContainer.empty()
-
-      @$label.contents().filter ->
-        this.nodeType == 3
-      .remove()
 
       if @files.length > 0
         @$filesContainer.append @makeHiddenField(JSON.stringify(@files))

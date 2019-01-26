@@ -6,7 +6,7 @@ source 'http://rubygems.org'
 gemspec
 
 # used by the dummy application
-gem 'cloudinary'
+gem 'cloudinary', '~> 1.8.3'
 gem 'jquery-rails'
 gem 'simple_form'
 
